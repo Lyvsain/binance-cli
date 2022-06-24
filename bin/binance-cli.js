@@ -10,13 +10,15 @@ const Trade = require('../commands/trade')
 // Example:
 //  - `binance-cli account`
 //  - `binance-cli a`
+//  - `binance-cli a -f btc`
 //  - `binance-cli a | jq '.balances[]| select(.asset == "BTC")'`
 //  - `binance-cli a | jq '.balances[]| select(.free != "0.00000000")'`
 program
   .command('account')
   .alias('a')
   .description('Get account balance.')
-  .action(async () => await Trade.account())
+  .option('-f, --filter <filter>', 'Filter account on assets, e.g. btc or btc,eth')
+  .action(async (args) => await Trade.account(args))
 
 // get compressed/aggregate trades list
 //

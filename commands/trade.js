@@ -62,10 +62,19 @@ const cancelAll = async (symbol) => {
   }
 }
 
-const account = async () => {
+const account = async ({ filter }) => {
   if (checkKeyAndSecret(apiKey, apiSecret)) {
-    client.account().then(response => print(response.data))
-      .catch(error => printError(error))
+    client.account().then(response => {
+        let data = {...response.data};
+        if(filter) {
+            const arrayFilter = filter.toUpperCase().split(',');
+            console.log("arrayFilter %o", arrayFilter);
+            data = {...data, balances: data.balances.filter(a => arrayFilter.includes(a.asset))}
+        } 
+
+        print(data)
+    })
+    .catch(error => printError(error))
   }
 }
 
